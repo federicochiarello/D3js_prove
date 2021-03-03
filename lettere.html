@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>D3.js prove</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+</head>
+
+<style>
+    body {
+        font-family: "Helvetica Neue", Helvetica, sans-serif;
+        font-size: 14px;
+        color: #333;
+    }
+    #menu {
+        margin: 10px;
+    }
+    #content div {
+        display: inline-block;
+        margin: 2px;
+        background-color: orange;
+        color: white;
+        padding: 8px;
+        width: 100px;
+        height: 30px;
+        text-align: center;
+    }
+</style>
+
+<body>
+    <div id="content">
+        <div>SHOULD CHANGE</div>   <!--placholder per provare merge(divs) -->
+    </div>
+    <button onclick="makeNewData()">randomize the data</button>
+
+    <!-- <svg id="svgID" width="640" height="480"></svg>
+    <script src="index.js"></script> -->
+
+    <script>
+
+        //makes new data
+        function makeNewData() {
+            var letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            letters = letters.slice(0, Math.floor(Math.random() * 26)).split("");
+            redraw(letters);
+        }
+        //redraw entire board
+        function redraw(receivedData) {
+            var divs = d3
+                .select("#content") // content div
+                .selectAll("div")   // [] empty selection
+                .data(receivedData);      // ['A', 'B', 'C']
+
+            divs
+                .enter()            // returning enterNode 3 - 0 = 3
+                // compare data array to selection array 
+                // return # enter nodes = length data array - length enter array
+                .append("div")
+                .merge(divs)        // aggiunge divs a enter nods (FORSE) se levato primo div non cambia mai
+                .text(d => d);      // ((d, i) => i);
+
+            divs.exit().remove();
+                // # exit nodes = length of the selection - length of the data array
+        }
+
+        makeNewData();
+    </script>
+
+</body>
+</html>
